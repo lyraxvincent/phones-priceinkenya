@@ -20,7 +20,7 @@ phonenames = ['samsung', 'huawei', 'nokia', 'tecno', 'infinix', 'apple', 'htc', 
 
 def getlinks(phonename):
     """
-    getting links for the different phones through pagination
+    get links for the different phones through pagination
     without going into specific webpages
     get links from the 'ul' pagination element
     :param phonename:
