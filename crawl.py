@@ -12,12 +12,6 @@ page = urlopen(req)
 soup = BeautifulSoup(page, "html.parser")
 """
 
-# list of phone types to scrap data for
-phonenames = ['samsung', 'huawei', 'nokia', 'tecno', 'infinix', 'apple', 'htc', 'google', 'xiaomi', 'motorola',
-              'blackberry', 'lg', 'oppo', 'sony', 'gionee', 'oneplus', 'cubot', 'hotwav', 'lenovo', 'vivo',
-              'lava', 'realme', 'honor', 'energizer', 'microsoft']
-
-
 def getlinks(phonename):
     """
     get links for the different phones through pagination
@@ -79,3 +73,31 @@ def getdata(link):
         df = pd.DataFrame(phonesdata)
         #df.to_csv("phonesdata.csv", index=False)
         return df
+
+
+# list of phone types to scrap data for
+phonenames = ['samsung', 'huawei', 'nokia', 'tecno', 'infinix', 'apple', 'htc', 'google', 'xiaomi', 'motorola',
+              'blackberry', 'lg', 'oppo', 'sony', 'gionee', 'oneplus', 'cubot', 'hotwav', 'lenovo', 'vivo',
+              'lava', 'realme', 'honor', 'energizer', 'microsoft']
+
+
+# calling the function on all phone types
+for phone in phonenames:
+    getlinks(phone)
+    print(f"Added links for [{phone}]")
+
+# filter links to remove duplicates
+links = set(links)
+print(f"\nTotal number of links: {len(links)}")
+
+# crawling the links for phonesdata
+dfs = []
+for link in links:
+    print(f"Getting phones data in [{link}]")
+    df = getdata(link)
+    dfs.append(df)
+
+# join all dfs
+df = pd.concat(dfs)
+df.to_csv("phonesdata.csv", index=False)
+print("Saved final dataframe.")

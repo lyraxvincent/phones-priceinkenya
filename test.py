@@ -22,10 +22,3 @@ def getlinks(phonename):
 
     return links
 
-# calling the function on all phone types
-for phone in phonenames:
-    getlinks(phone)
-    print(f"Added links for [{phone}]")
-
-links = set(links)
-print(f"Total number of links: {len(links)}")
