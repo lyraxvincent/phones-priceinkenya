@@ -36,13 +36,30 @@ def getlinks(phonename):
 
     return links
 
-def getdata(link):
-    """
-    get phones data and save it to a pandas dataframe
-    :param link:
-    :return: pandas dataframe
-    """
-    phonesdata = {"phone title": [], "specs": [], "price": [], "rating": [], "specs score": [], "likes": []}
+
+# list of phone types to scrap data for
+phonenames = ['samsung', 'huawei', 'nokia', 'tecno', 'infinix', 'apple', 'htc', 'google', 'xiaomi', 'motorola',
+              'blackberry', 'lg', 'oppo', 'sony', 'gionee', 'oneplus', 'cubot', 'hotwav', 'lenovo', 'vivo',
+              'lava', 'realme', 'honor', 'energizer', 'microsoft']
+
+# calling the function on all phone types
+links = []
+for phone in phonenames:
+    lnks = getlinks(phone)
+    for lnk in lnks:
+        links.append(lnk)
+    print(f"Added links for [{phone}]")
+
+# filter links to remove duplicates
+links = set(links)
+print(f"\nTotal number of links: {len(links)}")
+
+
+
+# getting phones data for all collected links
+phonesdata = {"phone title": [], "specs": [], "price": [], "rating": [], "specs score": [], "likes": []}
+
+for link in links:
     site = link
     hdr = {'User-Agent': 'Mozilla/5.0'}
     req = Request(site, headers=hdr)
@@ -69,35 +86,8 @@ def getdata(link):
         likes = phone_tag.find("div", {"class": "likes"}).find("like")[":likes-count"]
         phonesdata["likes"].append(likes)
 
-        # save data to pandas dataframe
-        df = pd.DataFrame(phonesdata)
-        #df.to_csv("phonesdata.csv", index=False)
-        return df
 
-
-# list of phone types to scrap data for
-phonenames = ['samsung', 'huawei', 'nokia', 'tecno', 'infinix', 'apple', 'htc', 'google', 'xiaomi', 'motorola',
-              'blackberry', 'lg', 'oppo', 'sony', 'gionee', 'oneplus', 'cubot', 'hotwav', 'lenovo', 'vivo',
-              'lava', 'realme', 'honor', 'energizer', 'microsoft']
-
-
-# calling the function on all phone types
-for phone in phonenames:
-    getlinks(phone)
-    print(f"Added links for [{phone}]")
-
-# filter links to remove duplicates
-links = set(links)
-print(f"\nTotal number of links: {len(links)}")
-
-# crawling the links for phonesdata
-dfs = []
-for link in links:
-    print(f"Getting phones data in [{link}]")
-    df = getdata(link)
-    dfs.append(df)
-
-# join all dfs
-df = pd.concat(dfs)
+# save data to csv file
+df = pd.DataFrame(phonesdata)
 df.to_csv("phonesdata.csv", index=False)
-print("Saved final dataframe.")
+print("Saved dataframe.")
