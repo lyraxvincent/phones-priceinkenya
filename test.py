@@ -12,25 +12,12 @@ page = urlopen(req)
 soup = BeautifulSoup(page, "html.parser")
 
 for phone_tag in soup.findAll("div", {"class": "col-md-6 col-lg-4 fancy-border"}):
-    phone_tag = phone_tag.find("article")
-    phone_title = phone_tag.find("span", {"itemprop": "name", "class": False}).get_text()
-    phonesdata["phone title"].append(phone_title)
-    specs = phone_tag.find("div", {"class": "mb-4"}).get_text()
-    phonesdata["specs"].append(specs)
+
     try:
-        price = phone_tag.find("span", {"class": "text-danger"}).get_text()
-        phonesdata["price"].append(price)
+        price = phone_tag.find("div", {"class": "h5 d-inline-block m-0 my-1"}).get_text()
+        #phonesdata["price"].append(price)
+        print(price)
     except:
         price = np.nan
-        phonesdata["price"].append(price)
-
-    rating = phone_tag.find("span", {"title": "Rating", "class": "mr-3"}).get_text()
-    phonesdata["rating"].append(rating)
-    specs_score = phone_tag.find("span", {"title": "Specs score"}).get_text()
-    phonesdata["specs score"].append(specs_score)
-    likes = phone_tag.find("div", {"class": "likes"}).find("like")[":likes-count"]
-    phonesdata["likes"].append(likes)
-
-
-df = pd.DataFrame(phonesdata)
-print(df.tail())
+        print(price)
+        #phonesdata["price"].append(price)

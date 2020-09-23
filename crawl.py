@@ -66,6 +66,8 @@ for link in links:
     page = urlopen(req)
     soup = BeautifulSoup(page, "html.parser")
 
+    print(f"Getting phones data in [{link}]")
+
     for phone_tag in soup.findAll("div", {"class":"col-md-6 col-lg-4 fancy-border"}):
         phone_tag = phone_tag.find("article")
         phone_title = phone_tag.find("span", {"itemprop": "name", "class":False}).get_text()
@@ -73,7 +75,7 @@ for link in links:
         specs = phone_tag.find("div", {"class": "mb-4"}).get_text()
         phonesdata["specs"].append(specs)
         try:
-            price = phone_tag.find("span", {"class": "text-danger"}).get_text()
+            price = phone_tag.find("div", {"class": "h5 d-inline-block m-0 my-1"}).get_text()
             phonesdata["price"].append(price)
         except:
             price = np.nan
