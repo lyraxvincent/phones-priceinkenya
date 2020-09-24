@@ -4,7 +4,7 @@
 This is a project aimed at building a pipepile for mobile phone price prediction using phone features and specifications.
 
 ## Data Collection
-The data was collected through website scrapping from [priceinkenya.com](www.priceinkenya.com) and prices (which were missing) from [jumia.co.ke](www.jumia.co.ke)  
+The data was collected through website scrapping from [priceinkenya.com](https://www.priceinkenya.com) and prices (which were missing) from [jumia.co.ke](https://www.jumia.co.ke)  
 Used were the scripts *crawl.py* and *pricefromjumia.py* respectively above.
 
 ## Data Updates
