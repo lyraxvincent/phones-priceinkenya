@@ -3,14 +3,24 @@ from bs4 import BeautifulSoup
 import re
 import numpy as np
 import pandas as pd
-import string
+
+# a function to clean phone titles so their search can yield better results
+def cleantitle(phonetitle):
+    if str(phonetitle).endswith("GB") or "/" in str(phonetitle):
+        phonetitle = ' '.join(phonetitle.split()[:-1])
+    if "(" in str(phonetitle):
+        phonetitle = phonetitle.split("(")[0].strip()
+        return phonetitle
+    else:
+        return phonetitle
+
 
 # read in csv file
-df = pd.read_csv("phonesdata.csv")
-df['Phone Title'] = df['Phone Title'].apply(lambda s: ''.join([l for l in s if l not in string.punctuation]))
-df['Phone Title'] = df['Phone Title'].apply(lambda s: ' '.join(s.split()[:-1]))
-df['Phone Title'] = df['Phone Title'].apply(lambda s: s.replace(" ", "+"))
-phonenames = list(df['Phone Title'])
+df = pd.read_csv("csv files/phonesdata.csv")
+df_ = df.copy()     # make copy to avoid editing the original phone titles
+df_['Phone Title'] = df_['Phone Title'].apply(cleantitle)
+df_['Phone Title'] = df_['Phone Title'].apply(lambda s: s.replace(" ", "+"))    # link syntax
+phonenames = list(df_['Phone Title'])
 
 prices = []
 for i, phonename in enumerate(phonenames):
@@ -30,4 +40,4 @@ for i, phonename in enumerate(phonenames):
 
 # add prices column to dataframe
 df['PriceJumia(Kshs)'] = pd.Series(prices)
-df.to_csv("phonesdata2.csv", index=False)
+df.to_csv("csv files/phonesdata_with_pfj.csv", index=False)
